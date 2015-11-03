@@ -84,12 +84,8 @@ def process_query(conn, query):
             print('result.rowcount = %d' % result.rowcount)
 
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('url', help='SQLAlchemy database URL - dialect+driver://username:password@host:port/database (see http://docs.sqlalchemy.org/en/rel_0_8/core/engines.html#database-urls for more info)')
-    args = parser.parse_args()
-
-    engine = sqlalchemy.create_engine(args.url, echo=False)
+def main(url, *args, **kwargs):
+    engine = sqlalchemy.create_engine(url, *args, **kwargs)
     conn = engine.connect()
 
     while True:
@@ -105,5 +101,8 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('url', help='SQLAlchemy database URL - dialect+driver://username:password@host:port/database (see http://docs.sqlalchemy.org/en/rel_0_8/core/engines.html#database-urls for more info)')
+    args = parser.parse_args()
+    main(args.url, echo=False)
 
